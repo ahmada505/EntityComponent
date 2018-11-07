@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-class ControlComponent
+class ControlComponent : public Component
 {
 public:
 	ControlComponent() {}

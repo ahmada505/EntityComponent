@@ -2,14 +2,17 @@
 #include <iostream>
 #include <vector>
 #include "Entity.h"
+#include <SDL_image.h>
+#include <string>
 
-class AISystem
+using namespace std;
+
+class RenderSystem
 {
-public:
 	std::vector<Entity *> m_entities;
 
 public:
-	AISystem();
+	RenderSystem();
 	void addEntity(Entity * e);
 	void update();
 };

@@ -1,5 +1,5 @@
 #include "Main.h"
-//#define SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
 #include <iostream>
 #include "HealthSystem.h"
 #include "ControlSystem.h"
