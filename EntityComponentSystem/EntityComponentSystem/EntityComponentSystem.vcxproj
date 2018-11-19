@@ -134,6 +134,7 @@
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="PositionSystem.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="System.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AIComponent.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="PositionComponent.cpp" />
     <ClCompile Include="PositionSystem.cpp" />
     <ClCompile Include="RenderSystem.cpp" />
+    <ClCompile Include="System.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="libjpeg-9.dll" />
@@ -162,6 +164,8 @@
   <ItemGroup>
     <Image Include="alien.PNG" />
     <Image Include="cat.PNG" />
+    <Image Include="dog.PNG" />
+    <Image Include="player.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

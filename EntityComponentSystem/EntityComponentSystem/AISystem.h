@@ -1,16 +1,12 @@
 #pragma once
-#include <iostream>
-#include <vector>
 #include "Entity.h"
+#include "System.h"
 
-class AISystem
+class AISystem : public System
 {
 public:
-	std::vector<Entity *> m_entities;
-
-public:
 	AISystem();
-	void addEntity(Entity * e);
-	void update();
+	~AISystem();
+	void Update();
+private:
 };
-

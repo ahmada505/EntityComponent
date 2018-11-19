@@ -1,16 +1,11 @@
 #pragma once
-#include <iostream>
 #include "Entity.h"
-
-using namespace std;
-
-class ControlSystem
+#include "System.h"
+class ControlSystem : public System
 {
-	vector<Entity *> m_entities;
-
 public:
 	ControlSystem();
-	void addEntity(Entity * e);
-	void update(SDL_Event & e);
+	~ControlSystem();
+	void Update();
+private:
 };
-

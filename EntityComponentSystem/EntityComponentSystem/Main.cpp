@@ -1,146 +1,83 @@
-#include "Main.h"
-#define SDL_MAIN_HANDLED
 #include <iostream>
+#include "Entity.h"
+#include "ControlComponent.h"
+#include "HealthComponent.h"
+#include "PositionComponent.h"
 #include "HealthSystem.h"
-#include "ControlSystem.h"
 #include "RenderSystem.h"
+#include "ControlSystem.h"
 #include "AISystem.h"
-#include <SDL.h>
-#include <SDL_image.h>
+#include "SDL.h"
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+using namespace std;
 
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
+int main(int argc, char* args[])
+{
+	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_Window* window = SDL_CreateWindow("ECS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 500, 500, SDL_WINDOW_OPENGL);
+	SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-//The window renderer
-SDL_Renderer* gRenderer = NULL;
+	Entity player(0);
+	player.AddComponent(new HealthComponent());
+	player.AddComponent(new PositionComponent(50, 50));
+	player.AddComponent(new ControllerComponent());
 
+	Entity alien(1);
+	alien.AddComponent(new HealthComponent());
+	alien.AddComponent(new PositionComponent(400, 400));
+	
 
+	Entity dog(2);
+	dog.AddComponent(new HealthComponent());
+	dog.AddComponent(new PositionComponent(50, 400));
 
-void initScreen() {
+	Entity cat(3);
+	cat.AddComponent(new HealthComponent());
+	cat.AddComponent(new PositionComponent(400, 50));
 
-	//The surface contained by the window
-	SDL_Surface* screenSurface = NULL;
+	HealthSystem healthSystem;
+	AISystem aiSystem;
+	RenderSystem renderSystem(renderer);
+	ControlSystem controllerSystem;
+	healthSystem.AddEntity(player);
+	healthSystem.AddEntity(alien);
+	healthSystem.AddEntity(dog);
+	healthSystem.AddEntity(cat);
 
-	//Initialize SDL
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
-	{
-		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-	}
-	else
-	{
-		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-		if (gWindow == NULL)
-		{
-			printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+	aiSystem.AddEntity(alien);
+	aiSystem.AddEntity(dog);
+	aiSystem.AddEntity(cat);
 
-		}
-		else
-		{
-			//Create renderer for window
-			gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
-			if (gRenderer == NULL)
-			{
-				printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+	renderSystem.AddEntity(player);
+	renderSystem.AddEntity(alien);
+	renderSystem.AddEntity(dog);
+	renderSystem.AddEntity(cat);
 
-			}
-			else
-			{
-				//Initialize renderer color
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-
-				//Initialize PNG loading
-				int imgFlags = IMG_INIT_PNG;
-				if (!(IMG_Init(imgFlags) & imgFlags))
-				{
-					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-
-				}
-			}
-		}
-	}
-
-	//Clear screen
-	SDL_RenderClear(gRenderer);
-
-	//Update screen
-	SDL_RenderPresent(gRenderer);
-
-}
-
-
-int main(int argc, char* argv[]) {
-
-	initScreen();
+	controllerSystem.AddEntity(player);
 
 	bool quit = false;
-	SDL_Event event;
-	Entity * player = new Entity();
-	Entity * alien = new Entity();
-	Entity * dog = new Entity();
-	Entity * cat = new Entity();
-
-	player->addComponent(new HealthComponent(10));
-	player->addComponent(new PositionComponent(300, 100));
-	player->addComponent(new ControlComponent());
-	player->addComponent(new GraphicComponent("human.png", 200, 200));
-
-	alien->addComponent(new HealthComponent(5));
-	alien->addComponent(new AIComponent(1));
-	alien->addComponent(new PositionComponent(1250, 100));
-	alien->addComponent(new GraphicComponent("alien.png", 200, 200));
-
-	dog->addComponent(new HealthComponent(4));
-	dog->addComponent(new AIComponent(2));
-	dog->addComponent(new PositionComponent(300, 650));
-	dog->addComponent(new GraphicComponent("dog.png", 200, 200));
-
-	cat->addComponent(new HealthComponent(8));
-	cat->addComponent(new AIComponent(3));
-	cat->addComponent(new PositionComponent(1250, 650));
-	cat->addComponent(new GraphicComponent("cat.jpg", 200, 200));
-
-	HealthSystem hs;
-	hs.addEntity(player);
-	hs.addEntity(alien);
-	hs.addEntity(dog);
-	hs.addEntity(cat);
-
-	ControlSystem cs;
-	cs.addEntity(player);
-
-	RenderSystem rs;
-	rs.addEntity(player);
-	rs.addEntity(alien);
-	rs.addEntity(dog);
-	rs.addEntity(cat);
-
-	AISystem as;
-	as.addEntity(alien);
-	as.addEntity(dog);
-	as.addEntity(cat);
+	SDL_Event e;
 
 	while (!quit) {
-		hs.update();
-		as.update();
-		SDL_PollEvent(&event);
-		cs.update(event);
-
-		rs.update();
+		while (SDL_PollEvent(&e) != 0) {
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+			}
+		}
+		renderSystem.Update();
+		controllerSystem.Update();
+		aiSystem.Update();
 	}
 
-	system("PAUSE");
 	return 0;
 }
-
-Main::Main()
-{
-}
-
-
-Main::~Main()
-{
-}
+//
+//Main::Main()
+//{
+//}
+//
+//
+//Main::~Main()
+//{
+//}

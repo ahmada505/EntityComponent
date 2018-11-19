@@ -24,7 +24,7 @@ public:
 	int getH() { return m_h; }
 	void setH(int h) { this->m_h = h; }
 
-	COMPONENTTYPE getType() { return type; }
+	//COMPONENTTYPE getType() { return type; }
 
 private:
 	string m_path;
@@ -33,6 +33,6 @@ private:
 	int m_w;
 	int m_h;
 
-	COMPONENTTYPE type = COMPONENTTYPE::RENDER;
+	//COMPONENTTYPE type = COMPONENTTYPE::RENDER;
 };
 

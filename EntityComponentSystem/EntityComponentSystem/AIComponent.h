@@ -1,19 +1,12 @@
 #pragma once
-#include "Component.h"
+#include "Entity.h"
+#include "System.h"
 
-class AIComponent : public Component
+class AISystem : public System
 {
 public:
-	AIComponent(int speed) : m_speed(speed) {}
-
-	int getSpeed() { return m_speed; }
-	void setSpeed(int speed) { m_speed = speed; }
-
-	COMPONENTTYPE getType() { return type; }
-
+	AISystem();
+	~AISystem();
+	void Update();
 private:
-	int m_speed;
-
-	COMPONENTTYPE type = COMPONENTTYPE::AI;
 };
-
